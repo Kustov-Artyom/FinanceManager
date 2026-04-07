@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f7fa;
+  color: #212529;
+}
+
+/* Переменные для светлой темы */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7fa;
+  --text-primary: #212529;
+  --text-secondary: #606266;
+  --border-color: #dcdfe6;
+  --accent-color: #409eff;
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --danger-color: #f56c6c;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Сайдбар фиксированной ширины */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  border-right: 1px solid #e4e7ed;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Основной контент с отступом под сайдбар */
+.main-content {
+  margin-left: 240px;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+/* Хедер */
+.app-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e4e7ed;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* Карточки */
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
