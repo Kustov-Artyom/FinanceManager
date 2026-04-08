@@ -3,12 +3,19 @@
     <div class="header-left">
       <h2 class="page-title">{{ pageTitle }}</h2>
     </div>
-    
+
     <div class="header-right">
       <el-dropdown>
         <span class="user-info">
-          <el-icon><User /></el-icon>
-          <span>Гость</span>
+          <el-icon>
+            <User />
+          </el-icon>
+          <span><span class="user-info">
+              <el-icon>
+                <User />
+              </el-icon>
+              <span>{{ authStore.fullName || authStore.username }}</span>
+            </span></span>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
@@ -28,6 +35,13 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.store'
+
+const authStore = useAuthStore()
+
+const logout = () => {
+  authStore.logout()
+}
 
 const route = useRoute()
 const router = useRouter()
@@ -45,10 +59,6 @@ const pageTitle = computed(() => {
   return names[route.name] || 'FinanceTracker'
 })
 
-const logout = () => {
-  localStorage.removeItem('userId')
-  router.push('/login')
-}
 </script>
 
 <style scoped>

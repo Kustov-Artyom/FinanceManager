@@ -6,17 +6,20 @@ const router = createRouter({
     {
       path: '/login',
       name: 'Login',
-      component: () => import('@/views/auth/LoginView.vue')
+      component: () => import('@/views/auth/LoginView.vue'),
+      meta: { requiresGuest: true }
     },
     {
       path: '/register',
       name: 'Register',
-      component: () => import('@/views/auth/RegisterView.vue')
+      component: () => import('@/views/auth/RegisterView.vue'),
+      meta: { requiresGuest: true }
     },
     {
       path: '/',
       component: () => import('@/components/layout/AppLayout.vue'),
       redirect: '/dashboard',
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'dashboard',
@@ -56,6 +59,25 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+// Navigation guards
+router.beforeEach((to, from, next) => {
+  const userId = localStorage.getItem('userId')
+  const isAuthenticated = !!userId
+
+  // Если страница требует авторизации
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/login')
+  }
+  // Если страница только для гостей (login/register), а пользователь уже авторизован
+  else if (to.meta.requiresGuest && isAuthenticated) {
+    next('/dashboard')
+  }
+  // Во всех остальных случаях
+  else {
+    next()
+  }
 })
 
 export default router
