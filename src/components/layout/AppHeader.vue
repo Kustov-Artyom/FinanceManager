@@ -7,15 +7,14 @@
     <div class="header-right">
       <el-dropdown>
         <span class="user-info">
-          <el-icon>
-            <User />
-          </el-icon>
-          <span><span class="user-info">
+          <span>
+            <span class="user-info">
               <el-icon>
                 <User />
               </el-icon>
               <span>{{ authStore.fullName || authStore.username }}</span>
-            </span></span>
+            </span>
+          </span>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
@@ -37,14 +36,9 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 
-const authStore = useAuthStore()
-
-const logout = () => {
-  authStore.logout()
-}
-
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 
 const pageTitle = computed(() => {
   const names = {
@@ -59,6 +53,9 @@ const pageTitle = computed(() => {
   return names[route.name] || 'FinanceTracker'
 })
 
+const logout = () => {
+  authStore.logout()
+}
 </script>
 
 <style scoped>

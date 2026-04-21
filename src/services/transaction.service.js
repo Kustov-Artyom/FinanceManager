@@ -1,30 +1,37 @@
 import api from './api'
-import { mockTransactions } from '@/mocks/transactions.mock'
+
+const API_URL = '/transactions'
 
 export const transactionService = {
-  // ПОКА возвращаем моковые данные
-  async getAll(filters = {}) {
-    // Когда будет бэк: return await api.get('/transactions', { params: filters })
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({ data: mockTransactions })
-      }, 500) // имитация задержки сети
+  async getAll(userId, filters = {}) {
+    const params = { userId, ...filters }
+    const response = await api.get(API_URL, { params })
+    return response.data
+  },
+  
+  async getById(id, userId) {
+    const response = await api.get(`${API_URL}/${id}`, { params: { userId } })
+    return response.data
+  },
+  
+  async create(transactionData, userId) {
+    const response = await api.post(API_URL, transactionData, {
+      params: { userId }
     })
+    return response.data
   },
   
-  async getById(id) {
-    // return await api.get(`/transactions/${id}`)
+  async update(id, transactionData, userId) {
+    const response = await api.put(`${API_URL}/${id}`, transactionData, {
+      params: { userId }
+    })
+    return response.data
   },
   
-  async create(data) {
-    // return await api.post('/transactions', data)
-  },
-  
-  async update(id, data) {
-    // return await api.put(`/transactions/${id}`, data)
-  },
-  
-  async delete(id) {
-    // return await api.delete(`/transactions/${id}`)
+  async delete(id, userId) {
+    const response = await api.delete(`${API_URL}/${id}`, {
+      params: { userId }
+    })
+    return response.data
   }
 }
