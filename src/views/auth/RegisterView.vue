@@ -161,7 +161,6 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* Те же стили что и в LoginView.vue */
 .auth-container {
   min-height: 100vh;
   display: flex;

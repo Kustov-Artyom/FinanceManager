@@ -61,20 +61,16 @@ const router = createRouter({
   ]
 })
 
-// Navigation guards
 router.beforeEach((to, from, next) => {
   const userId = localStorage.getItem('userId')
   const isAuthenticated = !!userId
 
-  // Если страница требует авторизации
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login')
   }
-  // Если страница только для гостей (login/register), а пользователь уже авторизован
   else if (to.meta.requiresGuest && isAuthenticated) {
     next('/dashboard')
   }
-  // Во всех остальных случаях
   else {
     next()
   }

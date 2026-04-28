@@ -1,6 +1,5 @@
 <template>
   <div class="accounts-page">
-    <!-- Заголовок + кнопка добавления -->
     <div class="page-header">
       <h2>Мои счета</h2>
       <el-button type="primary" @click="openAddDialog">
@@ -9,7 +8,6 @@
       </el-button>
     </div>
 
-    <!-- Статистика по счетам -->
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :span="6">
         <el-card class="stat-card">
@@ -37,7 +35,6 @@
       </el-col>
     </el-row>
 
-    <!-- Список счетов (карточки) -->
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :xs="24" :sm="12" :lg="8" v-for="account in accounts" :key="account.id">
         <el-card 
@@ -84,14 +81,12 @@
       </el-col>
     </el-row>
 
-    <!-- Пустое состояние -->
     <div v-if="accounts.length === 0 && !loading" class="empty-state">
       <el-empty description="Нет счетов">
         <el-button type="primary" @click="openAddDialog">Создать первый счёт</el-button>
       </el-empty>
     </div>
 
-    <!-- Диалог добавления/редактирования -->
     <el-dialog
       v-model="dialogVisible"
       :title="isEditing ? 'Редактировать счёт' : 'Новый счёт'"
@@ -168,12 +163,10 @@ import { useAuthStore } from '@/stores/auth.store'
 const authStore = useAuthStore()
 const userId = computed(() => authStore.userId)
 
-// Данные
 const accounts = ref([])
 const loading = ref(false)
 const submitting = ref(false)
 
-// Диалог
 const dialogVisible = ref(false)
 const isEditing = ref(false)
 const formRef = ref(null)
@@ -188,7 +181,6 @@ const form = reactive({
   isDefault: false
 })
 
-// Валидация
 const rules = {
   name: [
     { required: true, message: 'Введите название счёта', trigger: 'blur' },
@@ -199,7 +191,6 @@ const rules = {
   balance: [{ required: true, message: 'Введите баланс', trigger: 'blur' }]
 }
 
-// Вычисляемые значения
 const totalBalance = computed(() => {
   return accounts.value.reduce((sum, acc) => {
     if (acc.currency === 'RUB') return sum + acc.balance
@@ -227,7 +218,6 @@ const eurBalance = computed(() => {
     .reduce((sum, acc) => sum + acc.balance, 0)
 })
 
-// Методы
 const formatCurrency = (value, currency = 'RUB') => {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
@@ -331,7 +321,6 @@ const deleteAccount = async (id) => {
   }
 }
 
-// Загрузка при монтировании
 onMounted(() => {
   loadAccounts()
 })

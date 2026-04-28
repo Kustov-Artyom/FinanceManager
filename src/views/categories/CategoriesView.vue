@@ -15,7 +15,6 @@
       </div>
     </div>
 
-    <!-- Список категорий -->
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :xs="24" :sm="12" :lg="8" v-for="category in categories" :key="category.id">
         <el-card 
@@ -48,14 +47,12 @@
       </el-col>
     </el-row>
 
-    <!-- Пустое состояние -->
     <div v-if="categories.length === 0 && !loading" class="empty-state">
       <el-empty :description="`Нет категорий типа '${activeType === 'Income' ? 'Доходы' : 'Расходы'}'`">
         <el-button type="primary" @click="openAddDialog">Создать категорию</el-button>
       </el-empty>
     </div>
 
-    <!-- Диалог добавления/редактирования -->
     <el-dialog
       v-model="dialogVisible"
       :title="isEditing ? 'Редактировать категорию' : 'Новая категория'"
@@ -107,13 +104,11 @@ import { useAuthStore } from '@/stores/auth.store'
 const authStore = useAuthStore()
 const userId = computed(() => authStore.userId)
 
-// Данные
 const categories = ref([])
 const activeType = ref('Expense')
 const loading = ref(false)
 const submitting = ref(false)
 
-// Диалог
 const dialogVisible = ref(false)
 const isEditing = ref(false)
 const formRef = ref(null)
@@ -125,7 +120,6 @@ const form = reactive({
   color: '#909399'
 })
 
-// Валидация
 const rules = {
   name: [
     { required: true, message: 'Введите название', trigger: 'blur' },
@@ -134,7 +128,6 @@ const rules = {
   type: [{ required: true, message: 'Выберите тип', trigger: 'change' }]
 }
 
-// Методы
 const loadCategories = async () => {
   if (!userId.value) return
   
@@ -211,7 +204,6 @@ const deleteCategory = async (id) => {
   }
 }
 
-// Загрузка при монтировании
 onMounted(() => {
   loadCategories()
 })

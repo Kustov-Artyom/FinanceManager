@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://localhost:7016/api', // Порт твоего бэка
+  baseURL: 'https://localhost:7016/api',
   headers: { 'Content-Type': 'application/json' }
 })
 

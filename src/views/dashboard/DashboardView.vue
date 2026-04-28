@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard-page">
-    <!-- Карточки -->
     <el-row :gutter="20" style="margin-bottom: 24px">
       <el-col :span="8">
         <el-card class="stat-card">
@@ -28,7 +27,6 @@
       </el-col>
     </el-row>
 
-    <!-- Круговые диаграммы -->
     <el-row :gutter="20" style="margin-bottom: 24px">
       <el-col :xs="24" :md="12">
         <el-card class="chart-card">
@@ -50,7 +48,6 @@
       </el-col>
     </el-row>
 
-    <!-- График динамики (Line Chart) -->
     <el-card class="chart-card large-chart" style="margin-bottom: 24px">
       <template #header><span>Динамика: Доходы vs Расходы (6 мес)</span></template>
       <div class="chart-wrapper">
@@ -58,7 +55,6 @@
       </div>
     </el-card>
 
-    <!-- Последние транзакции -->
     <el-card>
       <template #header>
         <div style="display: flex; justify-content: space-between;">
@@ -111,7 +107,6 @@ import { transactionService } from '@/services/transaction.service'
 import api from '@/services/api'
 import dayjs from 'dayjs'
 
-// Регистрация ChartJS
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Filler)
 
 const authStore = useAuthStore()
@@ -123,7 +118,6 @@ const stats = ref({
 })
 const recentTransactions = ref([])
 
-// Данные графиков
 const expensePieData = computed(() => ({
   labels: stats.value.expenseCategories.map(c => c.name),
   datasets: [{ data: stats.value.expenseCategories.map(c => c.amount), backgroundColor: stats.value.expenseCategories.map(c => c.color) }]

@@ -3,7 +3,6 @@
     <h2>Настройки профиля</h2>
 
     <el-row :gutter="20">
-      <!-- Карточка: Личные данные -->
       <el-col :span="12">
         <el-card header="Личные данные">
           <el-form :model="profileForm" label-width="100px">
@@ -28,7 +27,6 @@
         </el-card>
       </el-col>
 
-      <!-- Карточка: Смена пароля -->
       <el-col :span="12">
         <el-card header="Безопасность">
           <el-form :model="passwordForm" label-width="120px" :rules="passwordRules" ref="passFormRef">
@@ -69,21 +67,18 @@ const profileLoading = ref(false)
 const passLoading = ref(false)
 const passFormRef = ref(null)
 
-// Данные профиля
 const profileForm = reactive({
   username: '',
   fullName: '',
   email: ''
 })
 
-// Данные пароля
 const passwordForm = reactive({
   oldPassword: '',
   newPassword: '',
   confirmPassword: ''
 })
 
-// Валидация пароля
 const validatePass2 = (rule, value, callback) => {
   if (value !== passwordForm.newPassword) {
     callback(new Error('Пароли не совпадают'))
@@ -104,7 +99,6 @@ const passwordRules = {
   ]
 }
 
-// Загрузка профиля
 const loadProfile = async () => {
   if (!userId) return
   try {
@@ -117,7 +111,6 @@ const loadProfile = async () => {
   }
 }
 
-// Сохранение профиля
 const saveProfile = async () => {
   profileLoading.value = true
   try {
@@ -127,7 +120,7 @@ const saveProfile = async () => {
       email: profileForm.email
     })
     ElMessage.success('Профиль обновлен')
-    authStore.fullName = profileForm.fullName // Обновим стейт
+    authStore.fullName = profileForm.fullName
   } catch (e) {
     ElMessage.error('Ошибка обновления')
   } finally {
@@ -135,7 +128,6 @@ const saveProfile = async () => {
   }
 }
 
-// Смена пароля
 const changePassword = async () => {
   if (!passFormRef.value) return
   

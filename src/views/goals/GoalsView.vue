@@ -49,7 +49,6 @@
       <el-empty description="Нет целей. Создайте первую!" />
     </div>
 
-    <!-- Модалка Создания/Редактирования -->
     <el-dialog v-model="dialogVisible" :title="isEditing ? 'Изменить цель' : 'Новая цель'" width="450px">
       <el-form :model="form" label-width="100px">
         <el-form-item label="Название">
@@ -74,7 +73,6 @@
       </template>
     </el-dialog>
 
-    <!-- Модалка Пополнения -->
     <el-dialog v-model="topUpVisible" title="Пополнить цель" width="400px">
       <div style="text-align: center; margin-bottom: 16px">
         <div style="font-size: 40px">{{ editingGoal?.icon }}</div>

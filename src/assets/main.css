@@ -27,7 +27,6 @@ body {
   min-height: 100vh;
 }
 
-/* Сайдбар фиксированной ширины */
 .sidebar {
   width: 240px;
   background: #ffffff;
@@ -39,14 +38,12 @@ body {
   z-index: 1000;
 }
 
-/* Основной контент с отступом под сайдбар */
 .main-content {
   margin-left: 240px;
   min-height: 100vh;
   background: #f5f7fa;
 }
 
-/* Хедер */
 .app-header {
   background: #ffffff;
   border-bottom: 1px solid #e4e7ed;
@@ -60,7 +57,6 @@ body {
   z-index: 999;
 }
 
-/* Карточки */
 .card {
   background: #ffffff;
   border-radius: 8px;

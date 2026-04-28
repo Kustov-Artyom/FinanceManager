@@ -1,6 +1,5 @@
 <template>
   <div class="transactions-page">
-    <!-- Фильтры -->
     <el-card class="filter-card">
       <el-form :inline="true" :model="filters" class="filter-form">
         <el-form-item label="Тип">
@@ -50,7 +49,6 @@
       </el-form>
     </el-card>
 
-    <!-- Статистика -->
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :span="8">
         <el-card class="stat-card income">
@@ -74,7 +72,6 @@
       </el-col>
     </el-row>
 
-    <!-- Таблица транзакций -->
     <el-card style="margin-top: 20px">
       <el-table :data="transactions" v-loading="loading" stripe style="width: 100%">
         <el-table-column prop="date" label="Дата" width="120">
@@ -119,7 +116,6 @@
       </div>
     </el-card>
 
-    <!-- Диалог добавления/редактирования -->
     <el-dialog
       v-model="dialogVisible"
       :title="isEditing ? 'Редактировать транзакцию' : 'Новая транзакция'"
@@ -214,29 +210,26 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { transactionService } from '@/services/transaction.service'
 import { accountService } from '@/services/account.service'
 import { categoryService } from '@/services/category.service'
-import { budgetService } from '@/services/budget.service' // Импортируем сервис бюджетов
+import { budgetService } from '@/services/budget.service'
 import { useAuthStore } from '@/stores/auth.store'
 import dayjs from 'dayjs'
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.userId)
 
-// Данные
 const transactions = ref([])
 const accounts = ref([])
 const categories = ref([])
-const currentBudgets = ref([]) // Храним бюджеты текущего месяца
+const currentBudgets = ref([])
 const loading = ref(false)
 const submitting = ref(false)
 
-// Фильтры
 const filters = reactive({
   type: '',
   categoryId: null
 })
 const dateRange = ref([])
 
-// Диалог
 const dialogVisible = ref(false)
 const isEditing = ref(false)
 const formRef = ref(null)
@@ -251,7 +244,6 @@ const form = reactive({
   note: ''
 })
 
-// Валидация
 const rules = {
   type: [{ required: true, message: 'Выберите тип', trigger: 'change' }],
   amount: [{ required: true, message: 'Введите сумму', trigger: 'blur' }],
@@ -260,7 +252,6 @@ const rules = {
   date: [{ required: true, message: 'Выберите дату', trigger: 'change' }]
 }
 
-// Вычисляемые значения
 const filteredCategories = computed(() => {
   if (!form.type) return categories.value
   return categories.value.filter(c => c.type === form.type)
@@ -282,7 +273,6 @@ const totalAccountsBalance = computed(() => {
   return accounts.value.reduce((sum, acc) => sum + acc.balance, 0)
 })
 
-// Методы
 const formatCurrency = (value) => {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
@@ -337,7 +327,6 @@ const loadCategories = async () => {
   }
 }
 
-// Загрузка бюджетов для текущего месяца
 const loadBudgets = async () => {
   if (!userId.value) return
   const now = dayjs()
@@ -379,7 +368,6 @@ const resetForm = () => {
   form.note = ''
 }
 
-// ... (весь код до submitForm остается таким же)
 
 const submitForm = async () => {
   if (!formRef.value) return
@@ -387,22 +375,17 @@ const submitForm = async () => {
   await formRef.value.validate(async (valid) => {
     if (!valid) return
     
-    // === ЛОГИКА ПРОВЕРКИ БЮДЖЕТА ===
     if (!isEditing.value && form.type === 'Expense') {
       const now = dayjs()
       const transactionDate = dayjs(form.date)
       
-      // Проверяем, относится ли транзакция к текущему месяцу
       if (transactionDate.month() === now.month() && transactionDate.year() === now.year()) {
         
-        // ПЕРЕЗАГРУЖАЕМ бюджеты и транзакции для точности
         const currentBudgets = await budgetService.getBudgets(userId.value, now.month() + 1, now.year())
         
-        // Ищем лимит для выбранной категории
         const budgetItem = currentBudgets.find(b => b.categoryId === form.categoryId)
         
         if (budgetItem && budgetItem.limitAmount > 0) {
-          // Считаем сколько УЖЕ потрачено (берем из актуальных данных бюджета)
           const alreadySpent = budgetItem.spentAmount
           
           console.log('=== ПРОВЕРКА БЮДЖЕТА ===')
@@ -413,7 +396,6 @@ const submitForm = async () => {
           console.log('Итого будет:', alreadySpent + form.amount)
           console.log('Превышение?', (alreadySpent + form.amount) > budgetItem.limitAmount)
           
-          // Проверяем: (Уже потрачено + Новая сумма) > Лимит
           if (alreadySpent + form.amount > budgetItem.limitAmount) {
             try {
               await ElMessageBox.confirm(
@@ -434,7 +416,7 @@ const submitForm = async () => {
               console.log('Пользователь подтвердил превышение')
             } catch (error) {
               console.log('Пользователь отменил транзакцию')
-              return // Прерываем создание транзакции
+              return
             }
           } else {
             console.log('Бюджет не превышен, всё ок')
@@ -446,7 +428,6 @@ const submitForm = async () => {
         console.log('Транзакция не в текущем месяце')
       }
     }
-    // ==============================
     
     submitting.value = true
     try {
@@ -469,7 +450,6 @@ const submitForm = async () => {
   })
 }
 
-// ... (остальной код остается таким же)
 
 const deleteTransaction = async (id) => {
   try {
@@ -488,13 +468,12 @@ const deleteTransaction = async (id) => {
   }
 }
 
-// Загрузка при монтировании
 onMounted(async () => {
   await Promise.all([
     loadTransactions(),
     loadAccounts(),
     loadCategories(),
-    loadBudgets() // Загружаем бюджеты при старте
+    loadBudgets()
   ])
 })
 </script>

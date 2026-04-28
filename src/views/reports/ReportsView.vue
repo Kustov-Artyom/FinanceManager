@@ -39,7 +39,6 @@
       </el-form>
     </el-card>
 
-    <!-- Превью данных -->
     <el-card style="margin-top: 20px" v-if="previewData.length">
       <template #header>Предпросмотр (первые 5 записей)</template>
       <el-table :data="previewData" stripe style="width: 100%">
@@ -95,7 +94,6 @@ const filters = ref({ type: '', categoryId: null })
 
 const formatCurrency = v => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(v)
 
-// Форматирование даты для таблицы
 const formatDate = (date) => {
   return dayjs(date).format('DD.MM.YYYY')
 }

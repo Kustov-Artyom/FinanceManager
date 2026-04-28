@@ -13,7 +13,6 @@
       />
     </div>
 
-    <!-- Статистика -->
     <el-row :gutter="20" style="margin-bottom: 20px">
       <el-col :span="8">
         <el-card class="stat-card">
@@ -35,7 +34,6 @@
       </el-col>
     </el-row>
 
-    <!-- Список категорий -->
     <el-card>
       <div v-if="budgets.length === 0" class="empty-state">
         <el-empty description="Нет категорий расходов" />
@@ -66,7 +64,6 @@
           </div>
         </div>
         
-        <!-- Прогресс-бар (показываем, если есть лимит) -->
         <el-progress 
           v-if="item.limitAmount > 0"
           :percentage="calculatePercent(item.spentAmount, item.limitAmount)" 
@@ -79,7 +76,6 @@
       </div>
     </el-card>
 
-    <!-- Диалог -->
     <el-dialog v-model="dialogVisible" title="Установить лимит" width="400px">
       <el-form :model="form" label-width="100px">
         <el-form-item label="Категория">

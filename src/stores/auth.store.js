@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', () => {
-  // Порт твоего бэка: 7016
   const API_URL = 'https://localhost:7016/api/auth'
   
   const userId = ref(localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : null)

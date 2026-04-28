@@ -12,7 +12,6 @@ export const accountService = {
   },
   
   async create(accountData, userId) {
-    // Отправляем userId в теле запроса вместе с данными счёта
     const requestData = {
       ...accountData,
       userId: userId
